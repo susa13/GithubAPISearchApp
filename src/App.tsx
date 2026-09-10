@@ -1,120 +1,93 @@
 import { useState } from "react";
-import heroImg from "./assets/hero.png";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
+import { Container, Box, Paper, TextField } from "@mui/material";
 import "./App.css";
+// import axios from "axios";
+// import type { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import MuiDataGrid from "./components/MuiDataGrid/MuiDataGrid";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [form, setForm] = useState({
+    searchQuery: "",
+  });
+  // const [tableData, setTableData] = useState<Repo[]>([]);
+  const [submittedQuery, setSubmittedQuery] = useState("");
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, searchQuery: event.target.value });
+  };
+
+  // const handleSearch = (searchQuery: string) => {
+  //     searchRepos(searchQuery).then((data) => {
+  //       console.log("Repository details:", data);
+
+  //       const dataRows: Repo[] = data.items.map((repo) => ({
+  //         id: repo.id,
+  //         full_name: repo.full_name,
+  //         login: repo.owner?.login ?? "",
+  //         avatar_url: repo.owner?.avatar_url ?? "",
+  //         created_at: repo.created_at,
+  //         watchers_count: repo.watchers_count,
+  //         stargazers_count: repo.stargazers_count,
+  //         updated_at: repo.updated_at,
+  //         description: repo.description ?? "No description",
+  //       }));
+
+  //       setTableData(dataRows);
+  //     });
+  //   };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (form.searchQuery.trim() !== "") {
+        setSubmittedQuery(form.searchQuery);
+      }
+    }
+  };
+
+  // type Post = {
+  //   userId: number;
+  //   id: number;
+  //   title: string;
+  //   body: string;
+  // };
+
+  // const testRequest = async () => {
+  //   const response = await axios
+  //     .get<Post>("https://jsonplaceholder.typicode.com/posts/1")
+  //     .then((response) => {
+  //       console.log(response);
+  //       console.log(response.data.title);
+  //       return response;
+  //     });
+  //   return response.data.title;
+  // };
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <Container
+        sx={{
+          display: "flex",
+          minHeight: "100vh",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Paper sx={{ marginTop: 1, width: "100%" }}>
+          <TextField
+            size="small"
+            id="search"
+            variant="filled"
+            value={form.searchQuery}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            fullWidth
+            placeholder="Press Enter to Search Github Repos"
+          />
+        </Paper>
+        <MuiDataGrid searchQuery={submittedQuery} />
+      </Container>
     </>
   );
 }
