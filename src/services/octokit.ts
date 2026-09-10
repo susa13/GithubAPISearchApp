@@ -1,4 +1,5 @@
 import { Octokit } from "octokit";
+import { type SearchReposParams } from "../types/searchReposParams";
 
 // // Not using authorization for now but here if needed
 // const octokit = new Octokit({
@@ -7,24 +8,33 @@ import { Octokit } from "octokit";
 
 const octokit = new Octokit({});
 
-export const searchRepos = async (
-  repo: string,
-  page: number = 1,
-  pageSize: number = 20,
-) => {
+export const searchRepos = async ({
+  searchQuery,
+  page = 1,
+  pageSize = 20,
+  sort = undefined,
+  order = undefined,
+}: SearchReposParams) => {
   try {
-    // const { data } = await octokit.rest.repos.get({
-    //   owner,
-    //   repo,
-    // });
+    // console.log("sort", sort);
+    // console.log("order", order);
+
+    // // Method 1
     const { data } = await octokit.rest.search.repos({
-      q: repo,
+      q: searchQuery,
       page: page,
       per_page: pageSize,
+      sort,
+      order,
     });
-    // const { data } = await octokit.request("GET /repos/{owner}/{repo}/issues", {
-    //   owner,
-    //   repo,
+
+    // // Method 2
+    // const { data } = await octokit.request("GET /search/repositories", {
+    //   q: searchQuery,
+    //   page: page,
+    //   per_page: pageSize,
+    //   sort,
+    //   order,
     // });
     return data;
   } catch (error) {

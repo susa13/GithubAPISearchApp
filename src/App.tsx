@@ -1,8 +1,5 @@
 import { useState } from "react";
-// import heroImg from "./assets/hero.png";
-// import reactLogo from "./assets/react.svg";
-// import viteLogo from "./assets/vite.svg";
-import { Container, Box, TextField } from "@mui/material";
+import { Container, Box, Paper, TextField } from "@mui/material";
 import "./App.css";
 // import axios from "axios";
 // import type { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
@@ -77,16 +74,18 @@ function App() {
           justifyContent: "center",
         }}
       >
-        <TextField
-          size="small"
-          id="search"
-          variant="filled"
-          value={form.searchQuery}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          fullWidth
-          placeholder="Press Enter to Search Github Repos"
-        />
+        <Paper sx={{ marginTop: 1, width: "100%" }}>
+          <TextField
+            size="small"
+            id="search"
+            variant="filled"
+            value={form.searchQuery}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            fullWidth
+            placeholder="Press Enter to Search Github Repos"
+          />
+        </Paper>
         <MuiDataGrid searchQuery={submittedQuery} />
       </Container>
     </>
